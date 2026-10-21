@@ -3,7 +3,7 @@ import aj from '../config/arcjet'
 import { ArcjetNodeRequest, slidingWindow } from "@arcjet/node";
 
 const securityMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-    if(!process.env.NODE_ENV === 'test') return next()
+    if(process.env.NODE_ENV === 'test') return next()
 
     try{
         const role: RateLimitRole = req.user?.role ?? 'guest';
@@ -53,7 +53,7 @@ const securityMiddleware = async (req: Request, res: Response, next: NextFunctio
         }
 
         if(decision.isDenied() && decision.reason.isRateLimit()) {
-            return res.status(403).json({ error: 'Too many requests', message: 'Automated requests are not allowed' })
+            return res.status(429).json({ error: 'Too many requests', message: 'Automated requests are not allowed' })
         }
 
         next()

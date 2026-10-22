@@ -1,6 +1,6 @@
 import express from "express";
-import subjectsRouter from "./routes/subjects"
-import cors from 'cors'
+import subjectsRouter from "./routes/subjects.js";
+import cors from "cors";
 import securityMiddleware from "./middleware/security.js";
 
 const app = express();

@@ -9,7 +9,7 @@ import { toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth.js";
 
 const app = express();
-const PORT = 8000;
+const port = process.env.PORT;
 
 if(!process.env.FRONTEND_URL) throw new Error('FRONTEND_URL is not set in .env file')
 
@@ -31,6 +31,6 @@ app.get("/", (req, res) => {
   res.send("Classroom backend is running");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });

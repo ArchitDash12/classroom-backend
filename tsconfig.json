@@ -5,8 +5,8 @@
     "lib": ["ES2022"],
 
     /* Node ESM */
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESnext",
+    "moduleResolution": "Bundler",
 
     /* Project structure */
     "rootDir": "src",

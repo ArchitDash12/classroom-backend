@@ -14,22 +14,23 @@ const securityMiddleware = async (
     }).user;
     const role: RateLimitRole = user?.role ?? "guest";
 
+    const isDev = process.env.NODE_ENV !== "production";
     let limit: number;
     let message: string;
 
     switch (role) {
       case "admin":
-        limit = 20;
-        message = "Admin request limit exceeded (20 per minute). Slow down.";
+        limit = isDev ? 300 : 20;
+        message = "Admin request limit exceeded. Slow down.";
         break;
       case "teacher":
       case "student":
-        limit = 10;
-        message = "User request limit exceeded (10 per minute). Please wait.";
+        limit = isDev ? 200 : 10;
+        message = "User request limit exceeded. Please wait.";
         break;
       default:
-        limit = 5;
-        message = "Guest request limit exceeded (5 per minute). Please sign up for higher limit.";
+        limit = isDev ? 200 : 10;
+        message = "Guest request limit exceeded. Please sign up for higher limit.";
         break;
     }
 
@@ -72,6 +73,10 @@ const securityMiddleware = async (
     next();
   } catch (error) {
     console.error("Arcjet middleware error:", error);
+    // Don't crash in dev if arcjet encounters network issues
+    if (process.env.NODE_ENV !== "production") {
+      return next();
+    }
     res.status(500).json({
       error: "Internal Error",
       message: "Something went wrong with security middleware",

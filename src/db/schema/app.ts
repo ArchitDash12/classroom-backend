@@ -27,7 +27,7 @@ export type Schedule = {
 
 export const departments = pgTable('departments', {
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-    code: varchar('code', {length: 50}).notNull(),
+    code: varchar('code', {length: 50}).notNull().unique(),
     name: varchar('name', {length: 255}).notNull(),
     description: varchar('description', {length: 255}),
     ...timestamps
@@ -64,6 +64,7 @@ export const enrollments = pgTable('enrollments', {
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
     studentId: text('student_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
     classId: integer('class_id').notNull().references(() => classes.id, { onDelete: 'cascade' }),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
 }, (table) => [
     unique('enrollments_student_id_class_id_unique').on(table.studentId, table.classId),
     index('enrollments_student_id_idx').on(table.studentId),

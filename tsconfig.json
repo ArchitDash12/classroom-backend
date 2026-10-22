@@ -30,5 +30,6 @@
     /* Environment types */
     "types": ["node"]
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/seed.ts", "src/test-api.ts"]
 }
